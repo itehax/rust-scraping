@@ -1,5 +1,5 @@
 # Web Scraping using rust
-This repository will contain the source code of my serious about web scraping using rust.
+This repository will contain the source code of my series about web scraping using rust.
 
 [Scraping airbnb](https://itehax.com/blog/web-scraping-using-rust)
 
