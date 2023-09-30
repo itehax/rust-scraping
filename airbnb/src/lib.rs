@@ -36,15 +36,15 @@ async fn scrape_all(driver: WebDriver) -> Result<(), Box<dyn Error>> {
 
             match next_page_button.is_clickable().await? {
                 true => {
-                    
+
                     //start extracting data
-                    
+
                     let house_elems = get_house_elements(&driver).await?;
 
                     for house_elem in house_elems {
 
                         let bnb_details = BnbDetails::from(house_elem).await?;
-                        
+
                         wtr.serialize(bnb_details)?;
 
                     }
