@@ -1,7 +1,7 @@
 use std::error::Error;
 use std::thread;
 use std::time::Duration;
-use thirtyfour::{prelude::WebDriverError, By, DesiredCapabilities, WebDriver, WebElement};
+use thirtyfour::{prelude::{WebDriverError, ElementWaitable}, By, DesiredCapabilities, WebDriver, WebElement};
 use url::Url;
 use serde::Serialize;
 
@@ -33,7 +33,9 @@ async fn scrape_all(driver: WebDriver) -> Result<(), Box<dyn Error>> {
 
             match next_page_button.is_clickable().await? {
                 true => {
-
+                    
+                    //start extracting data
+                    
                     let house_elems = get_house_elements(&driver).await?;
 
                     for house_elem in house_elems {
@@ -63,14 +65,11 @@ async fn scrape_all(driver: WebDriver) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
-async fn get_house_elements(driver: &WebDriver) -> Result<Vec<WebElement>, WebDriverError> {
-    driver.find_all(By::Css("#site-content > div > div:nth-child(2) > div > div > div > div > div.gsgwcjk.g8ge8f1.g14v8520.dir.dir-ltr > div.dir.dir-ltr > div > div.c1l1h97y.dir.dir-ltr > div > div > div > div.cy5jw6o.dir.dir-ltr > div > div.g1qv1ctd.c1v0rf5q.dir.dir-ltr")).await
-}
-
 async fn load_next_page(
     next_page_button: WebElement,
     driver: &WebDriver,
 ) -> Result<(), Box<dyn Error>> {
+
     next_page_button.click().await?;
     thread::sleep(Duration::from_secs(2));
 
@@ -80,6 +79,10 @@ async fn load_next_page(
     thread::sleep(Duration::from_secs(1));
 
     Ok(())
+}
+
+async fn get_house_elements(driver: &WebDriver) -> Result<Vec<WebElement>, WebDriverError> {
+    driver.find_all(By::Css("#site-content > div > div:nth-child(2) > div > div > div > div > div.gsgwcjk.g8ge8f1.g14v8520.dir.dir-ltr > div.dir.dir-ltr > div > div.c1l1h97y.dir.dir-ltr > div > div > div > div.cy5jw6o.dir.dir-ltr > div > div.g1qv1ctd.c1v0rf5q.dir.dir-ltr")).await
 }
 
 async fn initialize_driver() -> Result<WebDriver, WebDriverError> {
@@ -94,8 +97,13 @@ async fn search_location(driver: &WebDriver, place: &str) -> Result<(), WebDrive
 
     write_place(driver, place).await?;
 
-    driver.find(By::Css("#search-tabpanel > div.i1flv5qo.dir.dir-ltr > div.c6ezw63.c1geg2ah.dir.dir-ltr > div.c192dx2b.ckzf1ch.dir.dir-ltr > div.s31emu3.dir.dir-ltr > button")).await?.click().await?;
+    click_search_button(driver).await?;
 
+    Ok(())
+}
+
+async fn click_search_button(driver: &WebDriver) -> Result<(), WebDriverError> {
+    driver.find(By::Css("#search-tabpanel > div.i1flv5qo.dir.dir-ltr > div.c6ezw63.c1geg2ah.dir.dir-ltr > div.c192dx2b.ckzf1ch.dir.dir-ltr > div.s31emu3.dir.dir-ltr > button")).await?.click().await?;
     Ok(())
 }
 
@@ -111,9 +119,8 @@ async fn write_place(driver: &WebDriver, place: &str) -> Result<(), WebDriverErr
     let input = driver
         .find(By::Css("#bigsearch-query-location-input"))
         .await?;
-    while !input.is_clickable().await? {
-        thread::sleep(Duration::from_millis(100));
-    }
+    input.wait_until().clickable().await?;
+
     input.send_keys(place).await?;
 
     Ok(())
