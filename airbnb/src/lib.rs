@@ -1,9 +1,12 @@
+use serde::Serialize;
 use std::error::Error;
 use std::thread;
 use std::time::Duration;
-use thirtyfour::{prelude::{WebDriverError, ElementWaitable}, By, DesiredCapabilities, WebDriver, WebElement};
+use thirtyfour::{
+    prelude::{ElementWaitable, WebDriverError},
+    By, DesiredCapabilities, WebDriver, WebElement,
+};
 use url::Url;
-use serde::Serialize;
 
 pub async fn scrape_airbnb(place: &str) -> Result<(), Box<dyn Error>> {
     let driver = initialize_driver().await?;
@@ -33,15 +36,15 @@ async fn scrape_all(driver: WebDriver) -> Result<(), Box<dyn Error>> {
 
             match next_page_button.is_clickable().await? {
                 true => {
-                    
+
                     //start extracting data
-                    
+
                     let house_elems = get_house_elements(&driver).await?;
 
                     for house_elem in house_elems {
 
                         let bnb_details = BnbDetails::from(house_elem).await?;
-                        
+
                         wtr.serialize(bnb_details)?;
 
                     }
@@ -69,7 +72,6 @@ async fn load_next_page(
     next_page_button: WebElement,
     driver: &WebDriver,
 ) -> Result<(), Box<dyn Error>> {
-
     next_page_button.click().await?;
     thread::sleep(Duration::from_secs(2));
 
