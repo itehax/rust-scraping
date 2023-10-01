@@ -6,8 +6,8 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-csv = "1.2.2"
-serde = { version = "1.0.188", features = ["derive"] }
-thirtyfour = "0.31.0"
-tokio = { version = "1.32.0", features = ["full"] }
-url = "2.4.1"
+csv = { workspace = true }
+serde = { workspace = true }
+thirtyfour = { workspace = true }
+tokio = { workspace = true }
+url = { workspace = true }

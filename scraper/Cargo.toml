@@ -7,4 +7,4 @@ edition = "2021"
 
 [dependencies]
 airbnb = { path = "../airbnb" }
-tokio = { version = "1.32.0", features = ["full"] }
+tokio = { workspace = true }
