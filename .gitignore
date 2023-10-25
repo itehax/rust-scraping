@@ -1,3 +1,4 @@
-cargo.lock
-target
-chromedriver.exe
+/target
+/Cargo.lock
+chromedriver*
+*chromedriver

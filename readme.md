@@ -3,12 +3,15 @@ This repository will contain the source code of my series about web scraping usi
 
 [Scraping airbnb](https://itehax.com/blog/web-scraping-using-rust)
 
+[Rust web scraping course](https://youtu.be/LUhjyYEFXvo)
+
 Currently the repository contains
 : 
 - [x] Airbnb scraping.
-- [ ] Anna's archive (bypass cloudflare and undetected chromedriver).
-- [ ] downloading video from mp4 file.
-- [ ] download video from streaming website (parse m3u8 playlist and extract js scripts).
+- [x] Bypass cloudflare.
+- [x] Download books from Anna's archive.
+- [ ] Downloading video from mp4 file.
+- [ ] Download video from streaming website (parse m3u8 playlist and extract js scripts).
   
 
 

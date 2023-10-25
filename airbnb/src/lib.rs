@@ -84,7 +84,7 @@ async fn load_next_page(
 }
 
 async fn get_house_elements(driver: &WebDriver) -> Result<Vec<WebElement>, WebDriverError> {
-    driver.find_all(By::Css("#site-content > div > div:nth-child(2) > div > div > div > div > div.gsgwcjk.g8ge8f1.g14v8520.dir.dir-ltr > div.dir.dir-ltr > div > div.c1l1h97y.dir.dir-ltr > div > div > div > div.cy5jw6o.dir.dir-ltr > div > div.g1qv1ctd.c1v0rf5q.dir.dir-ltr")).await
+    driver.find_all(By::Css("#site-content > div > div:nth-child(2) > div > div > div > div > div.gsgwcjk.g8ge8f1.g14v8520.dir.dir-ltr > div > div > div.c1l1h97y.dir.dir-ltr > div > div > div > div > div > div.g1qv1ctd.c1v0rf5q.dir.dir-ltr")).await
 }
 
 async fn initialize_driver() -> Result<WebDriver, WebDriverError> {
@@ -104,15 +104,11 @@ async fn search_location(driver: &WebDriver, place: &str) -> Result<(), WebDrive
     Ok(())
 }
 
-async fn click_search_button(driver: &WebDriver) -> Result<(), WebDriverError> {
-    driver.find(By::Css("#search-tabpanel > div.i1flv5qo.dir.dir-ltr > div.c6ezw63.c1geg2ah.dir.dir-ltr > div.c192dx2b.ckzf1ch.dir.dir-ltr > div.s31emu3.dir.dir-ltr > button")).await?.click().await?;
-    Ok(())
-}
 
 async fn click_choose_place(driver: &WebDriver) -> Result<(), WebDriverError> {
     driver
-        .find(By::Css("body > div:nth-child(8) > div > div > div:nth-child(1) > div > div.cd56ld.cb80sj1.dir.dir-ltr > div.h1ta6hky.dir.dir-ltr > div > div > div > header > div > div.cb994eh.dir.dir-ltr > div.lkm6i7z.lr5v90m.l1rzxhu2.l1kj223i.dir.dir-ltr > div > span.ij8oydg.dir.dir-ltr > button:nth-child(1)"))
-        .await?.click().await?;
+        .find(By::Css("body > div:nth-child(8) > div > div > div:nth-child(1) > div > div.cd56ld.cb80sj1.dir.dir-ltr > div.h1ta6hky.dir.dir-ltr > div > div > div > header > div > div.c1ujpdn9.dir.dir-ltr > div.l1sjr04j.l1x4ovsg.llb1jct.lc9d3st.dir.dir-ltr > div > span.ieg7dag.dir.dir-ltr > button:nth-child(1)"))
+        .await?.click().await?; 
 
     Ok(())
 }
@@ -125,6 +121,11 @@ async fn write_place(driver: &WebDriver, place: &str) -> Result<(), WebDriverErr
 
     input.send_keys(place).await?;
 
+    Ok(())
+}
+
+async fn click_search_button(driver: &WebDriver) -> Result<(), WebDriverError> {
+    driver.find(By::Css("#search-tabpanel > div.ir2ixub.dir.dir-ltr > div.c111bvlt.c1gh7ier.dir.dir-ltr > div.c1ddhymz.cggll98.dir.dir-ltr > div.s1t4vwjw.dir.dir-ltr > button")).await?.click().await?;
     Ok(())
 }
 
@@ -198,6 +199,7 @@ impl BnbDetails {
             .text()
             .await
     }
+
     async fn get_star(house_elem: &WebElement) -> Result<String, WebDriverError> {
         if let Ok(star) = house_elem
             .find(By::Css("span > span.r1dxllyb.dir.dir-ltr"))
